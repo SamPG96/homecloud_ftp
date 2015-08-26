@@ -45,6 +45,19 @@ Note: At the moment all local directories will be sync/added to the root directo
      can exit the screen.
      The process can be stopped at any time by selecting the 'Stop' button.
 
+##Build for Windows
+To build homecloud_ftp into an '_.exe_' file for windows do the following(ensure py2exe
+package for python is installed):
+  1. Open the '_setup.py_' file in '_homecloud_ftp_' and check the annotation for more details.
+  2. Open CMD as administrator.
+  3. Go into the 'homecloud_ftp' directory.
+  4. Run the following command:
+         _Python setup.py py2exe_
+     Or if Python is not in your '_PATH_' then replace '_Python_' with the path to the Python
+     executable file, for example '_C:\Python33\python.exe_'
+  5. A new directory in 'homecloud_ftp' should of been created called '_dist_', which
+     holds the '_homecloud.exe_' file.
+
 ##Ideas for the future:
   - Add restore functionality.
   - Allow all configuration options to be changed in the GUI.
