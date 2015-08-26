@@ -28,7 +28,6 @@ class Settings_Parser():
         self.backup_dirs = [line.rstrip('\n') for line in open(BACKUP_DIRS_FILE)]
         for dir_count in range(0,len(self.backup_dirs)-1):
             self.backup_dirs[dir_count] = self.backup_dirs[dir_count].replace("\\","/")
-        print(self.backup_dirs)
 
     def set_option(self, section, option, value):
         # FOR FUTURE USE, sets a new option to a cfg file
