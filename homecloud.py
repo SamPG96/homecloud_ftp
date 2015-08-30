@@ -54,7 +54,6 @@ class App():
         tBackup = Tk()
         tBackup.title("Backup")
         tBackup.geometry("700x100")
-        tBackup.resizable(0,0)
         s_backup = screens.Backup(tBackup, self.ftp_connection, self.config)
         s_backup.mainloop()
         self.check_next_window(s_backup)
