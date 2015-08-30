@@ -154,7 +154,7 @@ class Backup():
         ftp_minute = ftp_mod_dt[14:16]
         ftp_second = ftp_mod_dt[16:18]
         ftp_mod_time = datetime.datetime.strptime('%s:%s:%s' %(ftp_hour,ftp_minute,ftp_second), '%H:%M:%S')
-        local_mod_dt = time.ctime(os.path.getmtime(file)).split(" ")
+        local_mod_dt = time.ctime(os.path.getmtime(file)).split()
         local_mod_dt[1] = time.strptime(local_mod_dt[1],'%b').tm_mon
         local_mod_date = datetime.datetime.strptime('%s %s %s' %(local_mod_dt[4],local_mod_dt[1],local_mod_dt[2]), '%Y %m %d')
         local_mod_time = datetime.datetime.strptime('%s' %local_mod_dt[3], '%H:%M:%S')
