@@ -154,7 +154,7 @@ class Backup(Frame, Screen):
     def go_to_main_menu(self):
         # the program will exit on return
         # kill the FTP connection
-        self.ftp_connection.quit()
+        ftp_options.kill_ftp_connection(self.ftp_connection)
         self.kill_window()
         self.next_window = 'main_menu'
         

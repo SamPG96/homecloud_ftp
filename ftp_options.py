@@ -14,6 +14,13 @@ def connect_to_ftp(ftp_ip, user, passw):
         error = e
     return ftp, error
 
+def kill_ftp_connection(connection):
+    # if the connection has timed out, catch the exception
+    try:
+        connection.quit()
+    except (ftplib.error_temp, ConnectionAbortedError, TimeoutError):
+        pass
+
 
 class Backup():
     """ Runs the backup process by either syncing the local
