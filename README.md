@@ -65,3 +65,11 @@ package for python is installed):
   - Add logging.
   - Securely store user name and password.
   - Support for defining the FTP server root directory to sync local directories to.
+
+ ##Known bugs
+  - An encoding error appears rarely when trying to send a file to the FTP server, the error is:
+    "UnicodeEncodeError: Error: 'latin-1' codec can't encode character '\u2013' in position 11: ordinal not in range(256)",
+    I am unsure to why this is happening, what I do know is that it is not down to the format of the file
+    because I can still successfully send files with the same format type as the failed files.
+    As a temporary measure in a previous commit I am catching this this error and writing to a file
+    the list of files that failed to send.
