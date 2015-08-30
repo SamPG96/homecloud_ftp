@@ -31,10 +31,14 @@ class Backup():
         self.ftp = ftp_connection
         self.config = config
         self.current_file = None
+        self.failed_files = []
+        self.failed_file = os.getcwd() + '/failed_files.txt'
         self.set_status("NOTHING")
         
     def start_backup(self):
         self.set_status("BACKINGUP")
+        # empty failed_files.txt
+        open(self.failed_file, 'w').close()
         # transfer each local directory defined in 'backup_directories.txt'
         for path in self.config.backup_dirs:
             if not os.path.isdir(path):
@@ -71,16 +75,34 @@ class Backup():
                     # has changed since it was uploaded then remove the server copy and replace it with
                     # the updated local file
                     self.ftp.delete(f)
-                    with open(f, 'rb') as fh:
-                        self.ftp.storbinary('STOR %s' % f, fh)
+                    # catch encode errors
+                    try:
+                        with open(f, 'rb') as fh:
+                            self.ftp.storbinary('STOR %s' % f, fh)
+                    except UnicodeEncodeError as e:
+                        with open(self.failed_file, 'a') as f_files:
+                            f_files.write('File:%s  Error:%s \n' %((path+'/'+f), e))
+                        self.failed_files.append((path+'/'+f, e))
                 elif not self.item_exists(f):
                     # if the local file does not exist in the server directory then upload it
-                    with open(f, 'rb') as fh:
-                        self.ftp.storbinary('STOR %s' % f, fh)
+                    # catch encode errors
+                    try:
+                        with open(f, 'rb') as fh:
+                            self.ftp.storbinary('STOR %s' % f, fh)
+                    except UnicodeEncodeError as e:
+                        with open(self.failed_file, 'a') as f_files:
+                            f_files.write('File: %s Error: %s \n' %((path+'/'+f), e))
+                        self.failed_files.append((path+'/'+ f, e))
             elif os.path.isfile(path + r'\{}'.format(f)) and not self.config.enable_sync:
                 # transfer the file
-                with open(f, 'rb') as fh:
-                    self.ftp.storbinary('STOR %s' % f, fh)
+                # catch encode errors
+                try:
+                    with open(f, 'rb') as fh:
+                        self.ftp.storbinary('STOR %s' % f, fh)
+                except UnicodeEncodeError as e:
+                    with open(self.failed_file, 'a') as f_files:
+                        f_files.write('File: %s Error: %s \n' %((path+'/'+f), e))
+                    self.failed_files.append((path+'/'+ f, e))
             elif os.path.isdir(path + r'\{}'.format(f)):
                 # if the current item is a directory then recursively transfer all files inside it
                 self.transfer_directory(path + '/' + f)
@@ -145,6 +167,10 @@ class Backup():
     def get_status(self):
         # return backup status
         return self.status
+
+    def get_failed_files(self):
+        # return dailed files
+        return self.failed_files
         
     def get_current_file(self):
         # returns the file being backed up
