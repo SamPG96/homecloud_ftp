@@ -171,7 +171,10 @@ class Backup(Frame, Screen):
             self.master.after(1, self.check_current_file)
         elif self.backup_local.get_status() == "FINISHED":
             # if the process has finished  change the state of the buttons
-            self.current_file.config(text="Finished")
+            end_message = 'Finished.'
+            if self.backup_local.get_failed_files():
+                end_message += ' One or more files failed to transfer, see \'failed_files.txt\'.'
+            self.current_file.config(text=end_message)
             self.stop_button_widget.config(state=DISABLED)
             self.done_button_widget.config(state=NORMAL)
         
