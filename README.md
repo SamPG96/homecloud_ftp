@@ -1,6 +1,6 @@
 #Homecloud FTP
 
-##Introduction:
+##Introduction
 I wanted a script that would sync my local directories with the directories on my FTP server
 and didn't want to satisfy dependencies such as 'rsync' with 'ssh' or 'lftp' with 'ftp'.
 This is because the machine I developed and tested on ran Windows 7 and satisfying these
@@ -11,7 +11,7 @@ A graphical interface is provided for ease of use and monitoring so that anyone 
 skill set can use this the program without a problem.
 The object oriented structure of this script allows for easy development and expansion.
 
-##Prerequisites:
+##Prerequisites
   - Python 3.3 (has only been tested on this version)
   - The connected server is running FTP. In my case using 'vsftpd'.
   - A user account has been set up that is accessible by FTP.
@@ -22,7 +22,7 @@ Note: At the moment all local directories will be sync/added to the root directo
 ##Download and install
   1. Pull down git the repository 'https://github.com/sammypg/homecloud_ftp.git'
 
-##How to use:
+##How to use
   1. Set a default address for the FTP server in 'config.cfg'.
      This can be changed manually in the login screen.
   2. Decide to either sync your local directories with the FTP directories
@@ -58,7 +58,7 @@ package for python is installed):
   5. A new directory in 'homecloud_ftp' should of been created called '_dist_', which
      holds the '_homecloud.exe_' file.
 
-##Ideas for the future:
+##Ideas for the future
   - Add restore functionality.
   - Allow all configuration options to be changed in the GUI.
   - More useful on screen statistics during backup process, such as time left till completion.
@@ -66,7 +66,7 @@ package for python is installed):
   - Securely store user name and password.
   - Support for defining the FTP server root directory to sync local directories to.
 
- ##Known bugs
+##Known bugs
   - An encoding error appears rarely when trying to send a file to the FTP server, the error is:
     "UnicodeEncodeError: Error: 'latin-1' codec can't encode character '\u2013' in position 11: ordinal not in range(256)",
     I am unsure to why this is happening, what I do know is that it is not down to the format of the file
