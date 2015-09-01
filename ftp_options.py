@@ -75,34 +75,13 @@ class Backup():
                     # has changed since it was uploaded then remove the server copy and replace it with
                     # the updated local file
                     self.ftp.delete(f)
-                    # catch encode errors
-                    try:
-                        with open(f, 'rb') as fh:
-                            self.ftp.storbinary('STOR %s' % f, fh)
-                    except UnicodeEncodeError as e:
-                        with open(self.failed_file, 'a') as f_files:
-                            f_files.write('File:%s  Error:%s \n' %((path+'/'+f), e))
-                        self.failed_files.append((path+'/'+f, e))
+                    self.transfer_file(f, path)
                 elif not self.item_exists(f):
                     # if the local file does not exist in the server directory then upload it
-                    # catch encode errors
-                    try:
-                        with open(f, 'rb') as fh:
-                            self.ftp.storbinary('STOR %s' % f, fh)
-                    except UnicodeEncodeError as e:
-                        with open(self.failed_file, 'a') as f_files:
-                            f_files.write('File: %s Error: %s \n' %((path+'/'+f), e))
-                        self.failed_files.append((path+'/'+ f, e))
+                    self.transfer_file(f, path)
             elif os.path.isfile(path + r'\{}'.format(f)) and not self.config.enable_sync:
                 # transfer the file
-                # catch encode errors
-                try:
-                    with open(f, 'rb') as fh:
-                        self.ftp.storbinary('STOR %s' % f, fh)
-                except UnicodeEncodeError as e:
-                    with open(self.failed_file, 'a') as f_files:
-                        f_files.write('File: %s Error: %s \n' %((path+'/'+f), e))
-                    self.failed_files.append((path+'/'+ f, e))
+                self.transfer_file(f, path)
             elif os.path.isdir(path + r'\{}'.format(f)):
                 # if the current item is a directory then recursively transfer all files inside it
                 self.transfer_directory(path + '/' + f)
@@ -127,7 +106,18 @@ class Backup():
                 # if the item is a directory recursively delete its contents
                 self.remove_ftp_directory(f)
         self.ftp.cwd('..')
-        self.ftp.rmd(directory)  
+        self.ftp.rmd(directory)
+
+    def transfer_file(self, file, path):
+        # transfer file to ftp server
+        # catch encode errors
+        try:
+            with open(file, 'rb') as fh:
+                self.ftp.storbinary('STOR %s' % file, fh)
+        except UnicodeEncodeError as e:
+            with open(self.failed_file, 'a') as f_files:
+                f_files.write('File: %s Error: %s \n' %((path+'/'+file), e))
+            self.failed_files.append((path+'/'+ file, e))
         
     def ftp_dir(self, directory):
         # checks if the current item is a directory or a file
