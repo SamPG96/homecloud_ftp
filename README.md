@@ -20,7 +20,7 @@ Note: At the moment all local directories will be sync/added to the root directo
 	  the FTP user account.
 
 ##Download and install
-  1. Pull down git the repository 'https://github.com/sammypg/homecloud_ftp.git'
+  1. Pull down the git repository 'https://github.com/sammypg/homecloud_ftp.git'
 
 ##How to use
   1. Set a default address for the FTP server in 'config.cfg'.
